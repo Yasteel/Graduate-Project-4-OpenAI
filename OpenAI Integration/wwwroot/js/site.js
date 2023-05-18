@@ -1,4 +1,22 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    $('.btn').click(function () {
 
-// Write your JavaScript code.
+        var input = $('#msgBox').val();
+
+        $.ajax({
+            url: '/ChatWebApi/Test',
+            type: 'POST',
+            data: {
+                "message": input
+            },
+            success: function (response) {
+                // Handle the response from the API if needed
+                console.log(response);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // Handle any errors that occur during the AJAX request
+                console.log('Error: ' + errorThrown);
+            }
+        });
+    });
+});

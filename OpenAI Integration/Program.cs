@@ -8,7 +8,8 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options => options.Jso
 
 builder.Services.AddScoped<IApiRequestService, ApiRequestService>();
 builder.Services.AddScoped<ICacheService, CacheService>();
-builder.Services.AddTransient<ILocalStorageService, LocalStorageService>();
+builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
+
 
 var app = builder.Build();
 

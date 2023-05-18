@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OpenAI_Integration.Interfaces;
 using OpenAI_Integration.Models;
-using System.Reflection;
 
 namespace OpenAI_Integration.WebApiControllers
 {
@@ -14,6 +13,7 @@ namespace OpenAI_Integration.WebApiControllers
         private readonly ICacheService cacheService;
         private readonly ILocalStorageService localStorageService;
         private string cacheKey = "Current";
+
         public ChatWebApiController
         (
             IApiRequestService apiRequestService,
@@ -35,12 +35,9 @@ namespace OpenAI_Integration.WebApiControllers
                 return DataSourceLoader.Load(new List<Message>(), loadOptions);
             }
 
-            var localStorageData = this.localStorageService.Get(this.cacheKey).ToString();
+            var localStorageData = this.localStorageService.Get();
 
-            var messages = JsonConvert.DeserializeObject<List<Message>>(localStorageData);
-
-
-            return DataSourceLoader.Load(messages, loadOptions);
+            return DataSourceLoader.Load(JsonConvert.DeserializeObject<List<Message>>(localStorageData), loadOptions);
         }
 
 
@@ -59,12 +56,6 @@ namespace OpenAI_Integration.WebApiControllers
             }
 
             return this.NotFound()!;
-        }
-
-
-        public object Test(string message)
-        {
-            return message;
         }
     }
 }

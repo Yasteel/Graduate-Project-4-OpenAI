@@ -4,10 +4,12 @@ namespace OpenAI_Integration.Interfaces
 {
     public interface ILocalStorageService
     {
-        Task<string> Get(string key);
+        string Get();
 
-        void Set(string key, string value);
+        void Set(List<Message> value);
 
-        void Append(string key, string value);
+        void Add(string message);
+
+        void Remove();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OpenAI_Integration.Interfaces;
 using OpenAI_Integration.Models;
 
@@ -7,26 +6,36 @@ namespace OpenAI_Integration.Services
 {
     public class LocalStorageService : ILocalStorageService
     {
-        private readonly IJSRuntime jSRuntime;
+        private List<Message> messages;
 
-        public LocalStorageService(IJSRuntime jSRuntime)
+        public LocalStorageService()
         {
-            this.jSRuntime = jSRuntime;
+            this.messages = new();
         }
 
-        public async Task<string> Get(string key)
+        public string Get()
         {
-            return await this.jSRuntime.InvokeAsync<string>("localStorage.getItem", key);
+            return JsonConvert.SerializeObject(this.messages);
         }
 
-        public async void Set(string key, string value)
+        public void Set(List<Message> messages)
         {
-            await this.jSRuntime.InvokeVoidAsync("localStorage.SetItem", key, value);
+            this.messages.Clear();
+            this.messages = messages;
         }
 
-        public void Append(string key, string value)
+        public void Add(string message)
         {
-            throw new NotImplementedException();
+            this.messages.Add(new Message()
+            {
+                role = "user",
+                content = message
+            });
+        }
+
+        public void Remove()
+        {
+            this.messages.Clear();
         }
     }
 }

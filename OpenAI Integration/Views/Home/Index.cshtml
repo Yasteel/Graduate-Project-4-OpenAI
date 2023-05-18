@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model Message
+
 <div class="container">
 	<div class="row">
 		<div class="col col-2 chat-history">
@@ -12,10 +14,16 @@
                 @(
                     Html.DevExtreme().List()
                     .DataSource(d => d
-                        .Mvc()
-                        .Controller("ChatWebApi")
-                        .LoadAction("Get")
+                    .Mvc()
+                    .Controller("ChatWebApi")
+                    .LoadAction("Get")
                     ).NoDataText("Start Chatting")
+                    )
+
+                @(
+                    Html.DevExtreme().DataGrid<Message>()
+
+                        .NoDataText("Start Chatting")
                 )
             </div>
 			<div class="controls">
@@ -31,61 +39,6 @@
 	</div>
 </div>
 
-
-
-
-
-@*<div class="controls">
-    @using (Html.BeginForm("GetResponse", "ChatWebApi", FormMethod.Post))
-    {
-
-        <div class="msgBox">
-            @(
-                Html.DevExtreme().Form<Message>()
-                .Items(items =>
-                {
-                    items.AddSimpleFor(_ => _.content)
-                    .Label(_ => _.Visible(false))
-                    .Editor(_ => _
-                    .TextBox()
-                    .Placeholder("Enter Message")
-                    .Width("100%")
-                    .OnEnterKey("test")
-                    );
-                })
-                )
-        </div>
-        <div class="btnBox">
-            <button class="btn btn-success mt-5" type="submit" style="">Send</button>
-        </div>
-    }
-</div>*@
-
-
-
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
-
-<script>
-    $(document).ready(function () {
-        $('.btn').click(function () {
-
-            var input = $('#msgBox').val();
-
-            $.ajax({
-                url: '/ChatWebApi/SendRequest',
-                type: 'POST',
-                data: {
-                    "message": input
-                },
-                success: function (response) {
-                    // Handle the response from the API if needed
-                    console.log(response);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    // Handle any errors that occur during the AJAX request
-                    console.log('Error: ' + errorThrown);
-                }
-            });
-        });
-    });
-</script>
+@section Scripts{
+	<script src="~/js/site.js"></script>
+}

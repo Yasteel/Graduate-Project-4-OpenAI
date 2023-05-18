@@ -14,13 +14,11 @@ namespace OpenAI_Integration.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly IApiRequestService apiRequestService;
-        private readonly ILocalStorageService localStorageService;
 
-        public HomeController(ILogger<HomeController> logger, IApiRequestService apiRequestService, ILocalStorageService localStorageService)
+        public HomeController(ILogger<HomeController> logger, IApiRequestService apiRequestService)
 		{
 			_logger = logger;
 			this.apiRequestService = apiRequestService;
-            this.localStorageService = localStorageService;
         }
 
         public IActionResult Index()
