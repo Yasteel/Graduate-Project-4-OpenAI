@@ -1,0 +1,52 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background: rgba(0,0,0,0.85);
+  color: white;
+}
+
+.row{
+    position: absolute;
+    left: 2rem;
+    width: 95%;
+    height: 85vh;
+}
+
+.row > .col{
+    border: 1px solid white;
+}
+
+.chat-container {
+    position: relative;
+    padding: .5rem;
+}
+
+.chat-history{
+    border-right: 1px solid white;
+}
+
+.controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
