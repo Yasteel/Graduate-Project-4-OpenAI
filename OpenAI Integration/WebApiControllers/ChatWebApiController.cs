@@ -11,14 +11,14 @@ namespace OpenAI_Integration.WebApiControllers
     {
         private readonly IApiRequestService apiRequestService;
         private readonly ICacheService cacheService;
-        private readonly ILocalStorageService localStorageService;
+        private readonly IMessageService localStorageService;
         private string cacheKey = "Current";
 
         public ChatWebApiController
         (
             IApiRequestService apiRequestService,
             ICacheService cacheService,
-            ILocalStorageService localStorageService
+            IMessageService localStorageService
         )
         {
             this.apiRequestService = apiRequestService;
@@ -28,21 +28,37 @@ namespace OpenAI_Integration.WebApiControllers
 
         public object Get(DataSourceLoadOptions loadOptions)
         {
-            var cacheData = this.cacheService.Get(this.cacheKey);
+            //var cacheData = this.cacheService.Get(this.cacheKey);
 
-            if (cacheData is null)
-            {
-                return DataSourceLoader.Load(new List<Message>(), loadOptions);
-            }
+            //if (cacheData is null)
+            //{
+            //    return DataSourceLoader.Load(new List<Message>(), loadOptions);
+            //}
 
             var localStorageData = this.localStorageService.Get();
 
-            return DataSourceLoader.Load(JsonConvert.DeserializeObject<List<Message>>(localStorageData), loadOptions);
+            return DataSourceLoader.Load(localStorageData, loadOptions);
         }
 
 
         public async Task<object> SendRequest(string message)
         {
+            var cacheData = this.cacheService.Get(this.cacheKey);
+
+            if (cacheData is null)
+            {
+                var cacheValue = $"chat;{DateTime.Now.ToString()};{message}";
+
+                this.cacheService.Set(this.cacheKey, cacheValue);
+            }
+
+            this.localStorageService.Add(new()
+            {
+                role = "User",
+                content = message,
+            });
+
+
             var response = JsonConvert.DeserializeObject<ChatResponseContent>(await this.apiRequestService.Get(message));
 
             if (response == null)
@@ -52,10 +68,40 @@ namespace OpenAI_Integration.WebApiControllers
 
             if (response.choices!.Any())
             {
-                return response.choices![0].Message!.content!;
+                var responseString = string.Empty;
+                foreach (var choice in response.choices!)
+                {
+                    responseString += choice.Message!.content;
+                    this.localStorageService.Add(choice.Message!);
+                }
+
+                return responseString;
             }
 
             return this.NotFound()!;
+        }
+
+        public void Test(string message)
+        {
+            this.localStorageService.Add(new Message()
+            {
+                role = "User",
+                content = message,
+            });
+
+            //return this.Ok();
+        }
+
+        public string GetMessages()
+        {
+            var cacheKey = this.cacheService?.Get(this.cacheKey);
+            var localStorage = this.localStorageService.Get();
+
+            return JsonConvert.SerializeObject(new LocalStorage()
+            {
+                CacheKey = cacheKey,
+                Messages = localStorage,
+            });
         }
     }
 }

@@ -2,13 +2,13 @@
 
 namespace OpenAI_Integration.Interfaces
 {
-    public interface ILocalStorageService
+    public interface IMessageService
     {
-        string Get();
+        List<Message> Get();
 
         void Set(List<Message> value);
 
-        void Add(string message);
+        void Add(Message message);
 
         void Remove();
     }

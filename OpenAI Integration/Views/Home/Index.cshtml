@@ -11,18 +11,47 @@
         </div>
 		<div class="col chat-container">
             <div class="chat">
-                @(
+               @* @(
                     Html.DevExtreme().List()
                     .DataSource(d => d
                     .Mvc()
                     .Controller("ChatWebApi")
                     .LoadAction("Get")
                     ).NoDataText("Start Chatting")
-                    )
+                    )*@
 
                 @(
                     Html.DevExtreme().DataGrid<Message>()
-
+                        .ID("chat-datagrid")
+                        .DataSource(d => d
+                            .Mvc()
+                            .Controller("ChatWebApi")
+                            .LoadAction("Get")
+                        )
+                        .ShowColumnHeaders(false)
+                        .DataRowTemplate(
+                            @<text>
+                                <div class="messageBubble" data-role="<%- data.role %>"> <%- data.content%></div>
+                            </text>
+                        )
+                        .Columns(_ =>
+                        {
+                            _.AddFor(_ => _.content)
+                            .CellTemplate(
+                                @<text>
+                                    <div class="messageBubble">
+                                        <p> <%- value %></p>
+                                    </div>
+                                </text>
+                            );
+                        })
+                        .Editing(_ => 
+                        {
+                            _.AllowAdding(false);
+                            _.AllowDeleting(false);
+                            _.AllowUpdating(false);
+                        })
+                        .WordWrapEnabled(true)
                         .NoDataText("Start Chatting")
                 )
             </div>

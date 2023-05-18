@@ -8,7 +8,8 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options => options.Jso
 
 builder.Services.AddScoped<IApiRequestService, ApiRequestService>();
 builder.Services.AddScoped<ICacheService, CacheService>();
-builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
+builder.Services.AddSingleton<IMessageService, MessageService>();
+builder.Services.AddSingleton<IChatHistoryService, ChatHistoryService>();
 
 
 var app = builder.Build();
