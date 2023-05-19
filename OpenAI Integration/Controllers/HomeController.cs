@@ -26,12 +26,6 @@ namespace OpenAI_Integration.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Submit(string text)
-        {
-            return View("Index");
-        }
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

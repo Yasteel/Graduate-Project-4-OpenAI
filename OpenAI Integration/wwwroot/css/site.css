@@ -54,16 +54,15 @@ body {
     left: 0;
     width: 100%;
     padding: 0 2rem;
-}
-
-.controls form {
+    
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
 }
 
-.controls form div{
+
+.controls div{
     display: flex;
     flex-grow: 1;
 }

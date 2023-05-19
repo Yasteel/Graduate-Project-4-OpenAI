@@ -11,13 +11,13 @@
             },
             success: function (response) {
                 // Handle the response from the API if needed
-                console.log(response);
 
                 const datagrid = $("#chat-datagrid").dxDataGrid("instance");
 
                 if (datagrid) {
                     datagrid.refresh();
                 }
+                $('#msgBox').val("");
 
                 updateLocalStorage();
             },
@@ -31,6 +31,12 @@
     $(document).on('click', '.historyItem', function(){
 
         getSavedChat($(this));
+    });
+
+    $(document).on('keypress', '#msgBox', function(e) {
+        if (e.key === "Enter") {
+            $('.btn').click();
+        }
     });
 
     updateChatHistory();
