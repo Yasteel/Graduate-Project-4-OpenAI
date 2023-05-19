@@ -11,7 +11,7 @@ namespace OpenAI_Integration.WebApiControllers
     {
         private readonly IApiRequestService apiRequestService;
         private readonly ICacheService cacheService;
-        private readonly IMessageService localStorageService;
+        private readonly IMessageService messageService;
         private readonly IChatHistoryService chatHistoryService;
         private string cacheKey = "Current";
 
@@ -19,13 +19,13 @@ namespace OpenAI_Integration.WebApiControllers
         (
             IApiRequestService apiRequestService,
             ICacheService cacheService,
-            IMessageService localStorageService,
+            IMessageService messageService,
             IChatHistoryService chatHistoryService
         )
         {
             this.apiRequestService = apiRequestService;
             this.cacheService = cacheService;
-            this.localStorageService = localStorageService;
+            this.messageService = messageService;
             this.chatHistoryService = chatHistoryService;
         }
 
@@ -38,7 +38,7 @@ namespace OpenAI_Integration.WebApiControllers
                 return DataSourceLoader.Load(new List<Message>(), loadOptions);
             }
 
-            var localStorageData = this.localStorageService.Get();
+            var localStorageData = this.messageService.Get();
 
             return DataSourceLoader.Load(localStorageData, loadOptions);
         }
@@ -55,7 +55,7 @@ namespace OpenAI_Integration.WebApiControllers
                 this.cacheService.Set(this.cacheKey, cacheValue);
             }
 
-            this.localStorageService.Add(new()
+            this.messageService.Add(new()
             {
                 role = "User",
                 content = message,
@@ -75,7 +75,7 @@ namespace OpenAI_Integration.WebApiControllers
                 foreach (var choice in response.choices!)
                 {
                     responseString += choice.Message!.content;
-                    this.localStorageService.Add(choice.Message!);
+                    this.messageService.Add(choice.Message!);
                 }
 
                 return responseString;
@@ -86,7 +86,7 @@ namespace OpenAI_Integration.WebApiControllers
 
         public void Test(string message)
         {
-            this.localStorageService.Add(new Message()
+            this.messageService.Add(new Message()
             {
                 role = "User",
                 content = message,
@@ -98,7 +98,7 @@ namespace OpenAI_Integration.WebApiControllers
         public string GetMessages()
         {
             var cacheKey = this.cacheService?.Get(this.cacheKey);
-            var localStorage = this.localStorageService.Get();
+            var localStorage = this.messageService.Get();
 
             return JsonConvert.SerializeObject(new LocalStorage()
             {
@@ -119,6 +119,21 @@ namespace OpenAI_Integration.WebApiControllers
             var chatHistory = this.chatHistoryService.Get();
 
             return DataSourceLoader.Load(chatHistory, loadOptions);
+        }
+
+        public object GetSavedChat(string chat, string key)
+        {
+            var messages = JsonConvert.DeserializeObject<List<Message>>(chat);
+
+            if( messages!.Any())
+            {
+
+                this.messageService.Set(messages!);
+
+                this.cacheService.Set(this.cacheKey, key);
+            }
+
+            return this.Ok();
         }
     }
 }

@@ -28,11 +28,13 @@
         });
     });
 
+    $(document).on('click', '.historyItem', function(){
+
+        getSavedChat($(this));
+    });
 
     updateChatHistory();
 });
-
-//var glob;
 
 function updateLocalStorage() {
     $.ajax({
@@ -85,4 +87,33 @@ function updateChatHistory() {
     });
 }
 
+function getSavedChat(element) {
 
+    var key = `chat;${$(element).attr("data-key")}`;
+
+    var localChat = localStorage.getItem(key);
+
+    $.ajax({
+        url: '/ChatWebApi/GetSavedChat',
+        type: 'POST',
+        data: {
+            "chat": localChat,
+            "key": key
+        },
+        success: function (response) {
+            const datagrid = $("#chat-datagrid").dxDataGrid("instance");
+
+            if (datagrid) {
+                datagrid.refresh();
+            }
+
+
+            $('.historyItem.active').removeClass('active');
+            $(element).addClass('active');
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(`Err: ${errorThrown}`);
+        }
+    });
+
+}
