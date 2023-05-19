@@ -6,16 +6,19 @@
 
     using OpenAI_Integration.Interfaces;
     using OpenAI_Integration.Models.ChatCompletion;
+	using OpenAI_Integration.Models.ImageGeneration;
+	using OpenAI_Integration.Models.TextEdit;
 
-    public class ApiRequestService : IApiRequestService
+	public class ApiRequestService : IApiRequestService
 	{
-		public void GetChat()
-		{
+        private readonly IConfiguration configuration;
 
-		}
+        public ApiRequestService(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
-
-		public async Task<string> Get(string message)
+        public async Task<string> Get(string message)
 		{
 			var requestContent = new ChatRequestContent()
 			{
@@ -30,22 +33,47 @@
 				}
 			};
 
-			return await this.Post(JsonConvert.SerializeObject(requestContent));
-
+			var uri = new Uri("https://api.openai.com/v1/chat/completions");
+			return await this.Post(JsonConvert.SerializeObject(requestContent), uri);
 		}
 
-		public async Task<string> Post(string requestContent) 
+		public async Task<string> Get(string input, string instruction)
 		{
-			const string API_KEY = "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";
+			var requestContent = new TextRequestContent()
+			{
+				Model = "code-davinci-edit-001",
+				Input = input,
+				Instruction = instruction
+			};
 
+			var uri = new Uri("https://api.openai.com/v1/edits");
+			return await this.Post(JsonConvert.SerializeObject(requestContent), uri);
+		}
+
+		public async Task<string> Get(string prompt, int numberOfImages, string imageSize)
+		{
+			var requestContent = new ImageRequestContent()
+			{
+				Prompt = prompt,
+				NumberImages = numberOfImages,
+				Size = imageSize
+			};
+
+			var uri = new Uri("https://api.openai.com/v1/images/generations");
+			return await this.Post(JsonConvert.SerializeObject(requestContent), uri);
+		}
+
+		public async Task<string> Post(string requestContent, Uri uri) 
+		{
+			string key = $"{configuration.GetValue<string>("key")}";
 			var client = new HttpClient();
 			var request = new HttpRequestMessage
 			{
 				Method = HttpMethod.Post,
-				RequestUri = new Uri("https://api.openai.com/v1/chat/completions"),
+				RequestUri = uri,
 				Headers =
 				{
-					{ "Authorization", $"Bearer {API_KEY}" }
+					{ "Authorization", $"Bearer {key}" }
 				},
 
                 Content = new StringContent(requestContent)

@@ -1,0 +1,126 @@
+﻿@using OpenAI_Integration.Models.ChatCompletion;
+@{
+    ViewData["Title"] = "Image Generation Feature";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col col-2 chat-history">
+            <h4>Chats</h4>
+            @*@(
+            Html.DevExtreme().DataGrid<ChatHistory>()
+            .ID("chat-history-datagrid")
+            .DataSource(d => d.Mvc()
+            .Controller("ChatWebApi")
+            .LoadAction("GetChatHistory")
+            )
+            .ShowColumnHeaders(false)
+            .DataRowTemplate(
+            @<text>
+            <div class="historyItem" data-key="<%- data.Timestamp %>;<%- data.Title%>"> <%- data.Title%></div>
+            </text>
+            )
+            .Columns(_ =>
+            {
+            _.AddFor(_ => _.Title)
+            .CellTemplate(
+            @<text>
+            <div class="historyItem">
+            </div>
+            </text>
+            );
+            })
+            .Editing(_ =>
+            {
+            _.AllowAdding(false);
+            _.AllowDeleting(false);
+            _.AllowUpdating(false);
+            })
+            .Height(550)
+            .Scrolling(s => s
+            .Mode(GridScrollingMode.Standard)
+            .RowRenderingMode(GridRowRenderingMode.Standard)
+            .ScrollByContent(true)
+            )
+            .WordWrapEnabled(true)
+            .NoDataText("Start Chatting")
+            )*@
+        </div>
+        <div class="col chat-container">
+            <div class="chat">
+
+                @(
+                    Html.DevExtreme().DataGrid<Message>()
+                    .ID("chat-datagrid")
+                    .DataSource(d => d.Mvc()
+                    .Controller("TextWebApi")
+                    .LoadAction("Get")
+                    )
+                    .ShowColumnHeaders(false)
+                    .DataRowTemplate(
+                    @<text>
+                        <div class="messageBubble" data-role="<%- data.role %>">
+                            <img src="<%- data.content %>" alt="" />
+                        </div>
+                        
+                    </text>
+                        )
+                        .Columns(_ =>
+                        {
+                            _.AddFor(_ => _.content)
+                        .CellTemplate(
+                        @<text>
+                            <div class="messageBubble">
+                                <p> <%- value %></p>
+                            </div>
+                        </text>
+                    );
+                        })
+                    .Editing(_ =>
+                    {
+                        _.AllowAdding(false);
+                        _.AllowDeleting(false);
+                        _.AllowUpdating(false);
+                    })
+                    .Height(550)
+                    .Scrolling(s => s
+                        .Mode(GridScrollingMode.Standard)
+                        .RowRenderingMode(GridRowRenderingMode.Standard)
+                        .ScrollByContent(true)
+                    )
+                    .WordWrapEnabled(true)
+                    .NoDataText("Start Chatting")
+                    )
+            </div>
+            <div class="controls image-generator">
+                <div class="form-group">
+                    <input type="text" class="form-control msgBox" id="prompt" placeholder="Enter Prompt">
+                    <select class="form-select" id="numberOfImages">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <select class="form-select" id="imageSize">
+                        <option value="256x256">256x256</option>
+                        <option value="512x512">512x512</option>
+                        <option value="1024x1024">1024x1024</option>
+                    </select>
+
+                </div>
+                <button type="button" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+	<script src="~/js/pages/imagegeneration.js"></script>
+}
+

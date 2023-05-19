@@ -4,6 +4,8 @@
 	{
 		Task<string> Get(string message);
 
-		//void Get(T model);
+		Task<string> Get(string input, string instruction);
+
+		Task<string> Get(string prompt, int numberOfImages, string imageSize);
 	}
 }

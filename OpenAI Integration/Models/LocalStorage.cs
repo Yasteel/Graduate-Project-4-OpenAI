@@ -6,6 +6,6 @@ namespace OpenAI_Integration.Models
     {
         public string? CacheKey { get; set; }
 
-        public List<Message> Messages { get; set; }
+        public List<Message>? Messages { get; set; }
     }
 }

@@ -21,5 +21,10 @@ namespace OpenAI_Integration.Services
         {
             this.cache.Set(key, value);
         }
+
+        public void Delete(string key)
+        {
+            this.cache.Remove(key);
+        }
     }
 }

@@ -2,8 +2,8 @@
 namespace OpenAI_Integration.Controllers
 {
 	using System.Diagnostics;
-
-	using Microsoft.AspNetCore.Mvc;
+    using System.Runtime.CompilerServices;
+    using Microsoft.AspNetCore.Mvc;
 
 	using Newtonsoft.Json;
 
@@ -13,16 +13,27 @@ namespace OpenAI_Integration.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		private readonly IApiRequestService apiRequestService;
+        private readonly ICacheService cache;
+        private readonly IMessageService messageService;
 
-        public HomeController(ILogger<HomeController> logger, IApiRequestService apiRequestService)
+        public HomeController
+		(
+			ILogger<HomeController> logger,
+			ICacheService cache,
+			IMessageService messageService
+		)
 		{
 			_logger = logger;
-			this.apiRequestService = apiRequestService;
+            this.cache = cache;
+            this.messageService = messageService;
         }
 
         public IActionResult Index()
         {
+			this.messageService.Remove();
+			this.cache.Delete("CurrentChat");
+            this.cache.Delete("CurrentImage");
+            this.cache.Delete("CurrentText");
             return View();
         }
 

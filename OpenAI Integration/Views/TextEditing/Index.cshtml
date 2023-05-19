@@ -1,13 +1,13 @@
 ﻿@using OpenAI_Integration.Models.ChatCompletion;
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Text Edit Feature";
 }
 
 <div class="container">
     <div class="row">
         <div class="col col-2 chat-history">
             <h4>Chats</h4>
-            @(
+            @*@(
                 Html.DevExtreme().DataGrid<ChatHistory>()
                 .ID("chat-history-datagrid")
                 .DataSource(d => d.Mvc()
@@ -36,9 +36,15 @@
                     _.AllowDeleting(false);
                     _.AllowUpdating(false);
                 })
+                .Height(550)
+                .Scrolling(s => s
+                    .Mode(GridScrollingMode.Standard)
+                    .RowRenderingMode(GridRowRenderingMode.Standard)
+                    .ScrollByContent(true)
+                )
                 .WordWrapEnabled(true)
                 .NoDataText("Start Chatting")
-                )
+                )*@
         </div>
         <div class="col chat-container">
             <div class="chat">
@@ -46,49 +52,55 @@
                 @(
                     Html.DevExtreme().DataGrid<Message>()
                     .ID("chat-datagrid")
-                    .DataSource(d => d
-                    .Mvc()
-                    .Controller("ChatWebApi")
-                    .LoadAction("Get")
+                    .DataSource(d => d.Mvc()
+                        .Controller("TextWebApi")
+                        .LoadAction("Get")
                     )
                     .ShowColumnHeaders(false)
                     .DataRowTemplate(
-                    @<text>
-                        <div class="messageBubble" data-role="<%- data.role %>"> <%- data.content%></div>
-                    </text>
-                        )
-                        .Columns(_ =>
-                        {
-                            _.AddFor(_ => _.content)
-                        .CellTemplate(
                         @<text>
-                            <div class="messageBubble">
-                                <p> <%- value %></p>
-                            </div>
+                            <div class="messageBubble" data-role="<%- data.role %>"> <%- data.content%></div>
                         </text>
-                    );
-                        })
+                    )
+                    .Columns(_ =>
+                    {
+                        _.AddFor(_ => _.content)
+                        .CellTemplate(
+                            @<text>
+                                <div class="messageBubble">
+                                    <p> <%- value %></p>
+                                </div>
+                            </text>
+                        );
+                    })
                     .Editing(_ =>
                     {
                         _.AllowAdding(false);
                         _.AllowDeleting(false);
                         _.AllowUpdating(false);
                     })
+                    .Height(480)
+                    .Scrolling(s => s
+                        .Mode(GridScrollingMode.Standard)
+                        .RowRenderingMode(GridRowRenderingMode.Standard)
+                        .ScrollByContent(true)
+                    )
                     .WordWrapEnabled(true)
                     .NoDataText("Start Chatting")
-                    )
+                )
             </div>
-            <div class="controls">
+            <div class="controls text-edit">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="msgBox" placeholder="Enter Message">
+                    <input type="text" class="form-control msgBox" id="text" placeholder="Enter Text">
+                    <input type="text" class="form-control msgBox" id="instruction" placeholder="Enter Instruction">
                 </div>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary">Send</button>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/site.js"></script>
+	<script src="~/js/pages/textedit.js"></script>
 }
 

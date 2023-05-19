@@ -35,8 +35,11 @@ body {
 }
 
 .chat-container {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: .5rem;
+
 }
 
 .chat-history{
@@ -49,9 +52,6 @@ body {
 }
 
 .controls {
-    position: absolute;
-    bottom: 1rem;
-    left: 0;
     width: 100%;
     padding: 0 2rem;
     
@@ -61,29 +61,45 @@ body {
     gap: 1rem;
 }
 
+.controls.text-edit{
+    flex-direction: row;
+    gap: .5rem;
+}
+
+.controls.image-generator div{
+    display: flex;
+    flex-direction: row;
+}
+
 
 .controls div{
     display: flex;
+    flex-direction: column;
+    gap: .5rem;
     flex-grow: 1;
 }
 
-.controls input{
+.controls :is(input, select){
     background: black;
     border: none;
     color: white;
+    padding: 1rem;
 }
 
-.controls input:focus{
+.controls :is(input, select):focus{
     background: black;
     color: var(--accent);
+}
+
+.controls.image-generator select{
+    width: 200px;
 }
 
 .controls button {
-
-
     background: black;
     border-color: black;
     color: var(--accent);
+    padding: 1rem 2rem;
 }
 
 .controls button:is(:hover,:focus) {

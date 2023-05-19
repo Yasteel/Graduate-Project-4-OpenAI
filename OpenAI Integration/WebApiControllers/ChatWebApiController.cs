@@ -14,7 +14,7 @@ namespace OpenAI_Integration.WebApiControllers
         private readonly ICacheService cacheService;
         private readonly IMessageService messageService;
         private readonly IChatHistoryService chatHistoryService;
-        private string cacheKey = "Current";
+        private string cacheKey = "CurrentChat";
 
         public ChatWebApiController
         (
@@ -39,9 +39,9 @@ namespace OpenAI_Integration.WebApiControllers
                 return DataSourceLoader.Load(new List<Message>(), loadOptions);
             }
 
-            var localStorageData = this.messageService.Get();
+            var messages = this.messageService.Get();
 
-            return DataSourceLoader.Load(localStorageData, loadOptions);
+            return DataSourceLoader.Load(messages, loadOptions);
         }
 
 
@@ -85,25 +85,14 @@ namespace OpenAI_Integration.WebApiControllers
             return this.NotFound()!;
         }
 
-        public void Test(string message)
-        {
-            this.messageService.Add(new Message()
-            {
-                role = "User",
-                content = message,
-            });
-
-            //return this.Ok();
-        }
-
         public string GetMessages()
         {
-            var cacheKey = this.cacheService?.Get(this.cacheKey);
+            var cacheValue = this.cacheService?.Get(this.cacheKey);
             var localStorage = this.messageService.Get();
 
             return JsonConvert.SerializeObject(new LocalStorage()
             {
-                CacheKey = cacheKey,
+                CacheKey = cacheValue,
                 Messages = localStorage,
             });
         }
@@ -126,12 +115,10 @@ namespace OpenAI_Integration.WebApiControllers
         {
             var messages = JsonConvert.DeserializeObject<List<Message>>(chat);
 
-            if( messages!.Any())
+            if (messages!.Any())
             {
-
                 this.messageService.Set(messages!);
-
-                this.cacheService.Set(this.cacheKey, key);
+                this.cacheService.Set(cacheKey, key);
             }
 
             return this.Ok();
