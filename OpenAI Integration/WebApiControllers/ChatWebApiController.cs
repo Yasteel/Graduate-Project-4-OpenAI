@@ -12,28 +12,31 @@ namespace OpenAI_Integration.WebApiControllers
         private readonly IApiRequestService apiRequestService;
         private readonly ICacheService cacheService;
         private readonly IMessageService localStorageService;
+        private readonly IChatHistoryService chatHistoryService;
         private string cacheKey = "Current";
 
         public ChatWebApiController
         (
             IApiRequestService apiRequestService,
             ICacheService cacheService,
-            IMessageService localStorageService
+            IMessageService localStorageService,
+            IChatHistoryService chatHistoryService
         )
         {
             this.apiRequestService = apiRequestService;
             this.cacheService = cacheService;
             this.localStorageService = localStorageService;
+            this.chatHistoryService = chatHistoryService;
         }
 
         public object Get(DataSourceLoadOptions loadOptions)
         {
-            //var cacheData = this.cacheService.Get(this.cacheKey);
+            var cacheData = this.cacheService.Get(this.cacheKey);
 
-            //if (cacheData is null)
-            //{
-            //    return DataSourceLoader.Load(new List<Message>(), loadOptions);
-            //}
+            if (cacheData is null)
+            {
+                return DataSourceLoader.Load(new List<Message>(), loadOptions);
+            }
 
             var localStorageData = this.localStorageService.Get();
 
@@ -102,6 +105,20 @@ namespace OpenAI_Integration.WebApiControllers
                 CacheKey = cacheKey,
                 Messages = localStorage,
             });
+        }
+
+        public void SetChatHistory(string history)
+        {
+            var chatHistory = JsonConvert.DeserializeObject<List<ChatHistory>>(history);
+
+            this.chatHistoryService.Set(chatHistory!);
+        }
+
+        public object GetChatHistory(DataSourceLoadOptions loadOptions)
+        {
+            var chatHistory = this.chatHistoryService.Get();
+
+            return DataSourceLoader.Load(chatHistory, loadOptions);
         }
     }
 }

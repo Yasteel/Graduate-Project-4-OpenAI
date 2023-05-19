@@ -36,7 +36,7 @@
 
 		public async Task<string> Post(string requestContent) 
 		{
-			const string API_KEY = "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";
+			const string API_KEY = "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";
 
 			var client = new HttpClient();
 			var request = new HttpRequestMessage

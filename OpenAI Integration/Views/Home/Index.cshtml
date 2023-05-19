@@ -7,18 +7,44 @@
 <div class="container">
 	<div class="row">
 		<div class="col col-2 chat-history">
-			<h4>Chat History</h4>
+			<h4>Chats</h4>
+            @(
+                Html.DevExtreme().DataGrid<ChatHistory>()
+                .ID("chat-history-datagrid")
+                .DataSource(d => d
+                .Mvc()
+                .Controller("ChatWebApi")
+                .LoadAction("GetChatHistory")
+                )
+                .ShowColumnHeaders(false)
+                .DataRowTemplate(
+                @<text>
+                    <div class="historyItem" data-key="<%- data.Timestamp %>;<%- data.Title%>"> <%- data.Title%></div>
+                </text>
+                    )
+                    .Columns(_ =>
+                    {
+                        _.AddFor(_ => _.Title)
+                        .CellTemplate(
+                            @<text>
+                                <div class="historyItem">
+                                    
+                                </div>
+                            </text>
+                        );
+                    })
+                .Editing(_ =>
+                {
+                    _.AllowAdding(false);
+                    _.AllowDeleting(false);
+                    _.AllowUpdating(false);
+                })
+                .WordWrapEnabled(true)
+                .NoDataText("Start Chatting")
+                )
         </div>
 		<div class="col chat-container">
             <div class="chat">
-               @* @(
-                    Html.DevExtreme().List()
-                    .DataSource(d => d
-                    .Mvc()
-                    .Controller("ChatWebApi")
-                    .LoadAction("Get")
-                    ).NoDataText("Start Chatting")
-                    )*@
 
                 @(
                     Html.DevExtreme().DataGrid<Message>()

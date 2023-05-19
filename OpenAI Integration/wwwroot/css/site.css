@@ -1,3 +1,7 @@
+:root {
+    --accent: #17B890;
+}
+
 html {
   font-size: 14px;
 }
@@ -27,7 +31,7 @@ body {
 }
 
 .row > .col{
-    border: 1px solid white;
+    border: 1px solid black;
 }
 
 .chat-container {
@@ -36,7 +40,12 @@ body {
 }
 
 .chat-history{
-    border-right: 1px solid white;
+    border-right: 1px solid black;
+}
+
+.chat-history h4{
+    text-align: center;
+    margin: 1.5rem 0;
 }
 
 .controls {
@@ -45,9 +54,43 @@ body {
     left: 0;
     width: 100%;
     padding: 0 2rem;
+}
+
+.controls form {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 1rem;
+}
+
+.controls form div{
+    display: flex;
+    flex-grow: 1;
+}
+
+.controls input{
+    background: black;
+    border: none;
+    color: white;
+}
+
+.controls input:focus{
+    background: black;
+    color: var(--accent);
+}
+
+.controls button {
+
+
+    background: black;
+    border-color: black;
+    color: var(--accent);
+}
+
+.controls button:is(:hover,:focus) {
+    background: var(--accent);
+    color: black;
+    border: 1px solid var(--accent);
 }
 
 .dx-datagrid{
@@ -60,7 +103,7 @@ body {
 }
 
 .messageBubble[data-role="assistant"] {
-    background: #17B890;
+    background: var(--accent);
     color: white;
     border-radius: 15px 15px 15px 0;
 }
@@ -71,3 +114,17 @@ body {
     border-radius: 15px 15px 0 15px;
 }
 
+.historyItem{
+    background: black;
+    color: white;
+    padding: 1rem;
+    margin-bottom: .5rem;
+    border-radius: 15px;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+
+.historyItem:hover {
+    color: var(--accent);
+}

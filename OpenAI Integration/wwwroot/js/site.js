@@ -27,9 +27,12 @@
             }
         });
     });
+
+
+    updateChatHistory();
 });
 
-var glob;
+//var glob;
 
 function updateLocalStorage() {
     $.ajax({
@@ -38,6 +41,43 @@ function updateLocalStorage() {
         success: function (response) {
             var jsonObj = JSON.parse(response);
             localStorage.setItem(jsonObj.CacheKey, JSON.stringify(jsonObj.Messages));
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(`Err: ${errorThrown}`);
+        }
+    });
+}
+
+function updateChatHistory() {
+    var local = window.localStorage;
+    var chatKeys = [];
+
+
+    for (key in local) {
+        if (key.includes("chat;")) {
+
+            var keySplit = key.split(";");
+
+            chatKeys.push({
+                "prefix": keySplit[0],
+                "timestamp": keySplit[1],
+                "title": keySplit[2]
+            });
+        }
+    }
+
+    $.ajax({
+        url: '/ChatWebApi/SetChatHistory',
+        type: 'POST',
+        data: {
+            "history": JSON.stringify(chatKeys)
+        },
+        success: function (response) {
+            const datagrid = $("#chat-history-datagrid").dxDataGrid("instance");
+
+            if (datagrid) {
+                datagrid.refresh();
+            }
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(`Err: ${errorThrown}`);

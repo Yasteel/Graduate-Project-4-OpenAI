@@ -3,24 +3,18 @@
     using OpenAI_Integration.Interfaces;
     using OpenAI_Integration.Models;
 
-
     public class ChatHistoryService : IChatHistoryService
     {
         private List<ChatHistory> chatHistory;
 
-        public ChatHistoryService() 
+        public ChatHistoryService()
         {
-            this.chatHistory = new ();
+            this.chatHistory = new();
         }
 
         public List<ChatHistory> Get()
         {
             return this.chatHistory;
-        }
-
-        public void Add(ChatHistory chat)
-        {
-            this.chatHistory.Add(chat);
         }
 
         public void Set(List<ChatHistory> chats)
@@ -29,11 +23,16 @@
             this.chatHistory = chats;
         }
 
+        public void Add(ChatHistory chat)
+        {
+            this.chatHistory.Add(chat);
+        }
+
         public void Remove()
         {
             this.chatHistory.Clear();
         }
 
-        
+
     }
 }
