@@ -1,0 +1,94 @@
+﻿@using OpenAI_Integration.Models.ChatCompletion;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col col-2 chat-history">
+            <h4>Chats</h4>
+            @(
+                Html.DevExtreme().DataGrid<ChatHistory>()
+                .ID("chat-history-datagrid")
+                .DataSource(d => d.Mvc()
+                    .Controller("ChatWebApi")
+                    .LoadAction("GetChatHistory")
+                )
+                .ShowColumnHeaders(false)
+                .DataRowTemplate(
+                    @<text>
+                        <div class="historyItem" data-key="<%- data.Timestamp %>;<%- data.Title%>"> <%- data.Title%></div>
+                    </text>
+                )
+                .Columns(_ =>
+                {
+                    _.AddFor(_ => _.Title)
+                    .CellTemplate(
+                        @<text>
+                            <div class="historyItem">
+                            </div>
+                        </text>
+                    );
+                })
+                .Editing(_ =>
+                {
+                    _.AllowAdding(false);
+                    _.AllowDeleting(false);
+                    _.AllowUpdating(false);
+                })
+                .WordWrapEnabled(true)
+                .NoDataText("Start Chatting")
+                )
+        </div>
+        <div class="col chat-container">
+            <div class="chat">
+
+                @(
+                    Html.DevExtreme().DataGrid<Message>()
+                    .ID("chat-datagrid")
+                    .DataSource(d => d
+                    .Mvc()
+                    .Controller("ChatWebApi")
+                    .LoadAction("Get")
+                    )
+                    .ShowColumnHeaders(false)
+                    .DataRowTemplate(
+                    @<text>
+                        <div class="messageBubble" data-role="<%- data.role %>"> <%- data.content%></div>
+                    </text>
+                        )
+                        .Columns(_ =>
+                        {
+                            _.AddFor(_ => _.content)
+                        .CellTemplate(
+                        @<text>
+                            <div class="messageBubble">
+                                <p> <%- value %></p>
+                            </div>
+                        </text>
+                    );
+                        })
+                    .Editing(_ =>
+                    {
+                        _.AllowAdding(false);
+                        _.AllowDeleting(false);
+                        _.AllowUpdating(false);
+                    })
+                    .WordWrapEnabled(true)
+                    .NoDataText("Start Chatting")
+                    )
+            </div>
+            <div class="controls">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="msgBox" placeholder="Enter Message">
+                </div>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/site.js"></script>
+}
+

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OpenAI_Integration.Interfaces;
 using OpenAI_Integration.Models;
+using OpenAI_Integration.Models.ChatCompletion;
 
 namespace OpenAI_Integration.WebApiControllers
 {

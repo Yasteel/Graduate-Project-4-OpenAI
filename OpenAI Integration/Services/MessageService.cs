@@ -1,7 +1,7 @@
 ﻿namespace OpenAI_Integration.Services
 {
     using OpenAI_Integration.Interfaces;
-    using OpenAI_Integration.Models;
+    using OpenAI_Integration.Models.ChatCompletion;
 
     public class MessageService : IMessageService
     {

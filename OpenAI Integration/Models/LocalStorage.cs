@@ -1,4 +1,6 @@
-﻿namespace OpenAI_Integration.Models
+﻿using OpenAI_Integration.Models.ChatCompletion;
+
+namespace OpenAI_Integration.Models
 {
     public class LocalStorage
     {

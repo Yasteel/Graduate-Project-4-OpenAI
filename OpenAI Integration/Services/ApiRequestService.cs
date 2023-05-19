@@ -1,13 +1,13 @@
 ﻿namespace OpenAI_Integration.Services
 {
-	using System.Net.Http.Headers;
+    using System.Net.Http.Headers;
 
-	using Newtonsoft.Json;
+    using Newtonsoft.Json;
 
-	using OpenAI_Integration.Interfaces;
-	using OpenAI_Integration.Models;
+    using OpenAI_Integration.Interfaces;
+    using OpenAI_Integration.Models.ChatCompletion;
 
-	public class ApiRequestService : IApiRequestService
+    public class ApiRequestService : IApiRequestService
 	{
 		public void GetChat()
 		{
