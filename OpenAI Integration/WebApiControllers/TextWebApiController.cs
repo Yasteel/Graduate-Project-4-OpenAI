@@ -4,9 +4,10 @@
     using DevExtreme.AspNet.Mvc;
 
     using Microsoft.AspNetCore.Mvc;
-	using Newtonsoft.Json;
-	using OpenAI_Integration.Interfaces;
-    using OpenAI_Integration.Models.ChatCompletion;
+	
+    using Newtonsoft.Json;
+	
+    using OpenAI_Integration.Interfaces;
 	using OpenAI_Integration.Models.TextEdit;
 
 	public class TextWebApiController : Controller

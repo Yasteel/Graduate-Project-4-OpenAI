@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OpenAI_Integration.Interfaces;
-
-namespace OpenAI_Integration.Controllers
+﻿namespace OpenAI_Integration.Controllers
 {
-	public class ImageController : Controller
+    using Microsoft.AspNetCore.Mvc;
+
+    using OpenAI_Integration.Interfaces;
+
+    public class ImageController : Controller
 	{
         private readonly IMessageService messageService;
         private readonly ICacheService cache;

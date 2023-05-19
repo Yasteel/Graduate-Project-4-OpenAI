@@ -1,11 +1,8 @@
-﻿
-namespace OpenAI_Integration.Controllers
+﻿namespace OpenAI_Integration.Controllers
 {
 	using System.Diagnostics;
-    using System.Runtime.CompilerServices;
-    using Microsoft.AspNetCore.Mvc;
 
-	using Newtonsoft.Json;
+    using Microsoft.AspNetCore.Mvc;
 
 	using OpenAI_Integration.Interfaces;
 	using OpenAI_Integration.Models;

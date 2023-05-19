@@ -1,7 +1,7 @@
-﻿using OpenAI_Integration.Models.ChatCompletion;
-
-namespace OpenAI_Integration.Interfaces
+﻿namespace OpenAI_Integration.Interfaces
 {
+    using OpenAI_Integration.Models.ChatCompletion;
+
     public interface IMessageService
     {
         List<Message> Get();

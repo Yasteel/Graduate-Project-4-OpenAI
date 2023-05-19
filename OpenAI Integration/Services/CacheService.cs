@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using OpenAI_Integration.Interfaces;
-
-namespace OpenAI_Integration.Services
+﻿namespace OpenAI_Integration.Services
 {
+    using Microsoft.Extensions.Caching.Memory;
+
+    using OpenAI_Integration.Interfaces;
+
     public class CacheService : ICacheService
     {
         private readonly IMemoryCache cache;

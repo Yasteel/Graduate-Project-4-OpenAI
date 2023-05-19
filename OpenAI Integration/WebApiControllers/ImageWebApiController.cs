@@ -1,16 +1,17 @@
-﻿using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using OpenAI_Integration.Interfaces;
-using OpenAI_Integration.Models.ChatCompletion;
-using OpenAI_Integration.Models.ImageGeneration;
-using OpenAI_Integration.Models.TextEdit;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace OpenAI_Integration.WebApiControllers
+﻿namespace OpenAI_Integration.WebApiControllers
 {
-	public class ImageWebApiController : Controller
+    using DevExtreme.AspNet.Data;
+    using DevExtreme.AspNet.Mvc;
+    
+	using Microsoft.AspNetCore.Mvc;
+    
+	using Newtonsoft.Json;
+    
+	using OpenAI_Integration.Interfaces;
+    using OpenAI_Integration.Models.ChatCompletion;
+    using OpenAI_Integration.Models.ImageGeneration;
+
+    public class ImageWebApiController : Controller
 	{
 		private readonly IApiRequestService apiRequestService;
 		private readonly ICacheService cacheService;
@@ -52,12 +53,6 @@ namespace OpenAI_Integration.WebApiControllers
 				var cacheValue = $"image-generator;{DateTime.Now.ToString()};{prompt}-{numberOfImages}-{imageSize}";
 				this.cacheService.Set(this.cacheKey, cacheValue);
 			}
-
-			//this.messageService.Add(new()
-			//{
-			//	role = "User",
-			//	content = $"{prompt}-{numberOfImages}-{imageSize}",
-			//});
 
 			var response = JsonConvert.DeserializeObject<ImageResponseContent>(await this.apiRequestService.Get(prompt!, numberOfImages, imageSize));
 

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace OpenAI_Integration.Models.TextEdit
+﻿namespace OpenAI_Integration.Models.TextEdit
 {
+    using Newtonsoft.Json;
+
     public class TextResponseContent
     {
         [JsonProperty("object")]
@@ -12,7 +12,3 @@ namespace OpenAI_Integration.Models.TextEdit
 
     }
 }
-
-// somthin wong with statement
-
-// fix grammar and spelling errors

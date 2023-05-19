@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace OpenAI_Integration.Models.TextEdit
+﻿namespace OpenAI_Integration.Models.TextEdit
 {
+    using Newtonsoft.Json;
+
     public class Choice
     {
         [JsonProperty("text")]

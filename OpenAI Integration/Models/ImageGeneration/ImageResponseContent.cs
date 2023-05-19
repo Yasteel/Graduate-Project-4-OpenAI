@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-
-namespace OpenAI_Integration.Models.ImageGeneration
+﻿namespace OpenAI_Integration.Models.ImageGeneration
 {
-	public class ImageResponseContent
+    using Newtonsoft.Json;
+
+    public class ImageResponseContent
 	{
 		[JsonProperty("created")]
         public long Created { get; set; }

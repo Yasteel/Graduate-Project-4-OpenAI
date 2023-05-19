@@ -1,7 +1,7 @@
-﻿using OpenAI_Integration.Models;
-
-namespace OpenAI_Integration.Interfaces
+﻿namespace OpenAI_Integration.Interfaces
 {
+    using OpenAI_Integration.Models;
+
     public interface IChatHistoryService
     {
         List<ChatHistory> Get();
