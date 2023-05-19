@@ -3,29 +3,36 @@
 
         var input = $('#msgBox').val();
 
-        $.ajax({
-            url: '/ChatWebApi/SendRequest',
-            type: 'POST',
-            data: {
-                "message": input
-            },
-            success: function (response) {
-                // Handle the response from the API if needed
+        if (input.trim().length < 1) {
+            alert("Cannot leave Message Blank");
+        }
+        else {
+            $.ajax({
+                url: '/ChatWebApi/SendRequest',
+                type: 'POST',
+                data: {
+                    "message": input
+                },
+                success: function (response) {
+                    // Handle the response from the API if needed
 
-                const datagrid = $("#chat-datagrid").dxDataGrid("instance");
+                    const datagrid = $("#chat-datagrid").dxDataGrid("instance");
 
-                if (datagrid) {
-                    datagrid.refresh();
+                    if (datagrid) {
+                        datagrid.refresh();
+                    }
+                    $('#msgBox').val("");
+
+                    updateLocalStorage();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle any errors that occur during the AJAX request
+                    console.log('Error: ' + errorThrown);
                 }
-                $('#msgBox').val("");
+            });
+        }
 
-                updateLocalStorage();
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                // Handle any errors that occur during the AJAX request
-                console.log('Error: ' + errorThrown);
-            }
-        });
+
     });
 
     $(document).on('click', '.historyItem', function(){

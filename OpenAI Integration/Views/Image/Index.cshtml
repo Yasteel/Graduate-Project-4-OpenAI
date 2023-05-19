@@ -60,21 +60,16 @@
                     .DataRowTemplate(
                     @<text>
                         <div class="messageBubble" data-role="<%- data.role %>">
-                            <img src="<%- data.content %>" alt="" />
+                            <div class="text-center">
+                                <img src="<%- data.content %>" alt="generated image" width="300" height="300" />
+                            </div>
                         </div>
                         
                     </text>
                         )
                         .Columns(_ =>
                         {
-                            _.AddFor(_ => _.content)
-                        .CellTemplate(
-                        @<text>
-                            <div class="messageBubble">
-                                <p> <%- value %></p>
-                            </div>
-                        </text>
-                    );
+                            _.AddFor(_ => _.content);
                         })
                     .Editing(_ =>
                     {
